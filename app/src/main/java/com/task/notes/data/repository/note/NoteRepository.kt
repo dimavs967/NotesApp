@@ -1,7 +1,6 @@
-package com.task.notes.data.repository
+package com.task.notes.data.repository.note
 
-import com.task.notes.data.db.NoteDao
-import com.task.notes.model.NoteModel
+import com.task.notes.data.local.db.NoteDao
 import com.task.notes.model.NotesModel
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -16,19 +15,16 @@ class NoteRepository @Inject constructor(
         noteDao.insertNotes(notesModel)
     }
 
+    // todo: rewrite method
     suspend fun getNotes(): NotesModel? {
         val result = noteDao.getNotes()
 
+        delay(5000L)
 
-
-        delay(1000L)
         return suspendCoroutine {
-            result?.let { list ->
+            result.let { list ->
                 it.resume(list)
             }
-//            if (result != null) {
-//                it.resume(result)
-//            }
         }
     }
 

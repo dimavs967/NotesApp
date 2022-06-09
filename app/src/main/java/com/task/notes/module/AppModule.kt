@@ -2,8 +2,8 @@ package com.task.notes.module
 
 import android.content.Context
 import androidx.room.Room
-import com.task.notes.data.db.NoteDatabase
-import com.task.notes.data.repository.NoteRepository
+import com.task.notes.data.local.db.NoteDatabase
+import com.task.notes.data.repository.note.NoteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

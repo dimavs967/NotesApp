@@ -8,5 +8,6 @@
     <string name="example_date_text">Example date</string>
     <string name="floating_action_button_description">Floating action button to add new item</string>
 
+    <string name="add_new_note_text">Add new note</string>
     <string name="connection_text">Please, check your internet connection</string>
 </resources>

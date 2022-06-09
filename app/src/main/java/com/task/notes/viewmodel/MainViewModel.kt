@@ -4,32 +4,47 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.task.notes.data.repository.NoteRepository
+import com.task.notes.data.repository.api.ApiRepository
+import com.task.notes.data.repository.note.NoteRepository
 import com.task.notes.model.NoteModel
 import com.task.notes.model.NotesModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repo: NoteRepository
+    private val repo: NoteRepository,
+    private val api: ApiRepository
 ) : ViewModel() {
 
-    // todo: maybe use LinkedList
     private var notesListLiveData = MutableLiveData<ArrayList<NoteModel>>()
 
     fun getNotesListLiveData(): LiveData<ArrayList<NoteModel>> {
         return notesListLiveData
     }
 
+    fun request() {
+        viewModelScope.launch {
+            val result = api.request()
+
+            result?.let {
+                notesListLiveData.value?.let { list ->
+                    list.addAll(it.list)
+                    notesListLiveData.postValue(list)
+                }
+            } ?: run {
+
+            }
+        }
+    }
+
+    // todo: rewrite method and add logic for note date
     fun addNote() {
+
         val cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
@@ -38,22 +53,19 @@ class MainViewModel @Inject constructor(
 //            val minute = c.get(Calendar.MINUTE)
 
         val note = NoteModel("New note", "", "$day/$month/$year")
-        val currentList = notesListLiveData.value
 
-//        notesListLiveData.value?.also { list ->
-        if (currentList != null) {
-            currentList.add(0, note)
-            notesListLiveData.postValue(currentList!!)
-        } else {
+        notesListLiveData.value?.let {
+            it.add(0, note)
+            notesListLiveData.postValue(it)
+        } ?: run {
             val newList = ArrayList<NoteModel>().also { it.add(note) }
             notesListLiveData.postValue(newList)
         }
-//        }
     }
 
     fun editNote(i: Int, note: NoteModel) {
         notesListLiveData.value?.let {
-            it.add(i, note)
+            it[i] = note
             notesListLiveData.postValue(it)
         }
     }
@@ -78,17 +90,11 @@ class MainViewModel @Inject constructor(
             if (notesListLiveData.value == null) {
                 repo.getNotes()?.let {
                     notesListLiveData.postValue(it.list as ArrayList<NoteModel>)
+                } ?: run {
+                    notesListLiveData.postValue(ArrayList())
                 }
             }
         }
     }
-
-//    suspend fun getLiveDataValue(): ArrayList<NoteModel>? {
-//        return suspendCoroutine {
-//            notesListLiveData.value?.let { list ->
-//                it.resume(list)
-//            }
-//        }
-//    }
 
 }

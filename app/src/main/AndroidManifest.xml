@@ -3,6 +3,7 @@
     package="com.task.notes">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,6 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Notes.CustomTheme">
+
+        <service
+            android:name=".service.BackgroundService"
+            android:enabled="true"
+            android:exported="false"/>
+
         <activity
             android:name=".ui.main.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

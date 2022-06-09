@@ -61,5 +61,19 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+<!--        <TextView-->
+<!--            android:id="@+id/tip_text"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/add_note_btn"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            android:layout_margin="40dp"-->
+<!--            android:textSize="22sp"-->
+<!--            android:textColor="@color/light_gray"-->
+<!--            android:text="Add new note"-->
+<!--            android:fontFamily="@font/inter_semibold"-->
+<!--            />-->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,4 +1,4 @@
-package com.task.notes.data.db
+package com.task.notes.data.local.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

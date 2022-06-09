@@ -16,12 +16,14 @@ class NoteRepository @Inject constructor(
         noteDao.insertNotes(notesModel)
     }
 
-    suspend fun getNotes(): NotesModel {
+    suspend fun getNotes(): NotesModel? {
         val result = noteDao.getNotes()
+
+
 
         delay(1000L)
         return suspendCoroutine {
-            result.let { list ->
+            result?.let { list ->
                 it.resume(list)
             }
 //            if (result != null) {

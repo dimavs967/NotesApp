@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class NotesModel(
     val list: List<NoteModel>
 ) {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     var id: Int = 0
 }
 

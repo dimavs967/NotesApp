@@ -30,7 +30,25 @@ class MainViewModel @Inject constructor(
     }
 
     fun addNote() {
+        val cal = Calendar.getInstance()
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+//            val hour = c.get(Calendar.HOUR_OF_DAY)
+//            val minute = c.get(Calendar.MINUTE)
 
+        val note = NoteModel("New note", "", "$day/$month/$year")
+        val currentList = notesListLiveData.value
+
+//        notesListLiveData.value?.also { list ->
+        if (currentList != null) {
+            currentList.add(0, note)
+            notesListLiveData.postValue(currentList!!)
+        } else {
+            val newList = ArrayList<NoteModel>().also { it.add(note) }
+            notesListLiveData.postValue(newList)
+        }
+//        }
     }
 
     fun editNote(i: Int, note: NoteModel) {
@@ -48,7 +66,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun setNotes() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             notesListLiveData.value?.let {
                 repo.setNotes(NotesModel(it))
             }
@@ -57,9 +75,11 @@ class MainViewModel @Inject constructor(
 
     fun getNotes() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repo.getNotes().list as ArrayList<NoteModel>
-
-            notesListLiveData.postValue(result)
+            if (notesListLiveData.value == null) {
+                repo.getNotes()?.let {
+                    notesListLiveData.postValue(it.list as ArrayList<NoteModel>)
+                }
+            }
         }
     }
 

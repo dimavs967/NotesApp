@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.task.notes.model.NotesModel
 import com.task.notes.utils.ListConverter
 
-@Database(entities = [NotesModel::class], version = 1)
+@Database(entities = [NotesModel::class], version = 2)
 @TypeConverters(ListConverter::class)
 abstract class NoteDatabase: RoomDatabase() {
     abstract fun noteDao(): NoteDao

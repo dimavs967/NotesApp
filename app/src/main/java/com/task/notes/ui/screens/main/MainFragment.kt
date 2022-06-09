@@ -79,9 +79,9 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.addNoteBtn.setOnClickListener {
-            lifecycleScope.launch {
-
-            }
+//            lifecycleScope.launch {
+            viewModel.addNote()
+//            }
         }
 
         itemHelper?.onRemoveItemListener {
@@ -95,8 +95,14 @@ class MainFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.setNotes()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        itemHelper = null
         _binding = null
         adapter = null
     }

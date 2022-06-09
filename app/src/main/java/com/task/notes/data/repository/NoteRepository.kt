@@ -14,6 +14,7 @@ class NoteRepository @Inject constructor(
         noteDao.insertNotes(notesModel)
     }
 
+    // todo: do null safety
     suspend fun getNotes(): ArrayList<NoteModel> {
         val result = noteDao.getNotes().list
         val notesList = ArrayList<NoteModel>()

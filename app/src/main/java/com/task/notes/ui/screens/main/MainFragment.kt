@@ -39,15 +39,18 @@ class MainFragment : Fragment() {
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerView.adapter = adapter
 
+        // todo: take out from fragment
         val deleteIcon =
             ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_delete_sweep)!!
 
-        ItemTouchHelper(
-            SwipeToDelete(
-                adapter!!,
-                deleteIcon
-            )
-        ).attachToRecyclerView(binding.recyclerView)
+        // todo: rename
+        val test = SwipeToDelete(adapter = adapter!!, deleteIconRes = deleteIcon)
+
+        ItemTouchHelper(test).attachToRecyclerView(binding.recyclerView)
+
+        test.onRemoveItemListener {
+            viewModel.deleteNote(it)
+        }
 
         viewModel.getNotesListLiveData().observe(viewLifecycleOwner) {
             if (it != null) {

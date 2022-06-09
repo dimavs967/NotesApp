@@ -19,9 +19,10 @@ class NotesAdapter(
         onClickListener = position
     }
 
-    fun deleteItem(position: Int) {
+    fun deleteItem(position: Int): Int {
         list.removeAt(position)
         notifyItemRemoved(position)
+        return position
     }
 
     @SuppressLint("NotifyDataSetChanged")

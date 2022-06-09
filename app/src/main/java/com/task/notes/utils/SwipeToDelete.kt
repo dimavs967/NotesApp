@@ -2,12 +2,12 @@ package com.task.notes.utils
 
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.task.notes.ui.screens.adapter.NotesAdapter
 
 class SwipeToDelete(
+    private var onRemoveItemListener: (Int) -> Unit = {},
     adapter: NotesAdapter,
     deleteIconRes: Drawable
 ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -18,6 +18,10 @@ class SwipeToDelete(
     private val inWidth = deleteIcon.intrinsicWidth
     private val inHeight = deleteIcon.intrinsicHeight
 
+    fun onRemoveItemListener(index: (Int) -> Unit) {
+        onRemoveItemListener = index
+    }
+
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -26,9 +30,9 @@ class SwipeToDelete(
         return false
     }
 
-    // todo: check delete from index
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        mAdapter.deleteItem(viewHolder.absoluteAdapterPosition)
+        val itemIndex = mAdapter.deleteItem(viewHolder.absoluteAdapterPosition)
+        onRemoveItemListener(itemIndex)
     }
 
     override fun onChildDraw(

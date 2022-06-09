@@ -21,27 +21,25 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     // todo: maybe use LinkedList
-    private var notesList = MutableLiveData<ArrayList<NoteModel>>()
+    private var notesListLiveData = MutableLiveData<ArrayList<NoteModel>?>()
 
-    fun getNotesListLiveData(): LiveData<ArrayList<NoteModel>> {
-        return notesList
+    fun getNotesListLiveData(): LiveData<ArrayList<NoteModel>?> {
+        return notesListLiveData
     }
 
-    suspend fun editNote(index: Int, note: NoteModel) = withContext(Dispatchers.IO) {
-        notesList.also {
-            val list = it.value
+    fun editNote(index: Int, note: NoteModel) {
+        val notesList = notesListLiveData.value
 
-            if (list != null) {
-                list[index] = note
-                it.postValue(list)
-            }
+        if (notesList != null) {
+            notesList[index] = note
+            notesListLiveData.postValue(notesList)
         }
     }
 
     // todo: remake method
     suspend fun addNote() = withContext(Dispatchers.IO) {
-        val cal = Calendar.getInstance()
 
+        val cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
@@ -49,41 +47,39 @@ class MainViewModel @Inject constructor(
 //            val minute = c.get(Calendar.MINUTE)
 
         val note = NoteModel("New note", "", "$day/$month/$year")
+        val notesList = notesListLiveData.value
 
-        notesList.value.also { data ->
-            if (data != null) {
-                data.add(0, note)
-                notesList.postValue(data)
-            } else {
-                val list = ArrayList<NoteModel>().also { it.add(note) }
-                notesList.postValue(list)
-            }
+        if (notesList != null) {
+            notesList.add(0, note)
+            notesListLiveData.postValue(notesList)
+        } else {
+            val newList = ArrayList<NoteModel>().also { it.add(note) }
+            notesListLiveData.postValue(newList)
         }
     }
 
     fun deleteNote(index: Int) {
-        notesList.value?.removeAt(index)
-    }
+        val notesList = notesListLiveData.value
+        notesList?.removeAt(index)
 
-
-    fun editList() {
-
+        notesListLiveData.postValue(notesList)
     }
 
     fun insertNotes() {
         viewModelScope.launch {
-            val currentNotes = notesList.value
-            repo.insertNotes(NotesModel(list = currentNotes!!))
+            val notesList = notesListLiveData.value
+
+            if (notesList != null) {
+                repo.insertNotes(NotesModel(notesList))
+            }
         }
     }
 
     fun getNotes() {
         viewModelScope.launch {
-            notesList.value.also {
-                if (it == null) {
-                    val result = repo.getNotes()
-                    notesList.postValue(result)
-                }
+            val result = repo.getNotes()
+            if (notesListLiveData.value == null) {
+                notesListLiveData.postValue(result)
             }
         }
     }

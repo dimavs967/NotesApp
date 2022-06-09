@@ -33,9 +33,9 @@ class NoteFragment : Fragment() {
         _binding = FragmentNoteBinding.inflate(layoutInflater)
 
         viewModel.getNotesListLiveData().observe(viewLifecycleOwner) {
-            if (it != null) {
-                updateUiElements(it[args.position])
-            }
+//            if (it != null) {
+//                updateUiElements(it[args.position])
+//            }
         }
 
         return binding.root

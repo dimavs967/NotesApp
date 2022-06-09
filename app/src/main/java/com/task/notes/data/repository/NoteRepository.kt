@@ -5,25 +5,29 @@ import com.task.notes.model.NoteModel
 import com.task.notes.model.NotesModel
 import kotlinx.coroutines.delay
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class NoteRepository @Inject constructor(
     private val noteDao: NoteDao
 ) {
 
-    suspend fun insertNotes(notesModel: NotesModel) {
+    suspend fun setNotes(notesModel: NotesModel) {
         noteDao.insertNotes(notesModel)
     }
 
-    // todo: do null safety
-    suspend fun getNotes(): ArrayList<NoteModel> {
-        val result = noteDao.getNotes().list
-        val notesList = ArrayList<NoteModel>()
+    suspend fun getNotes(): NotesModel {
+        val result = noteDao.getNotes()
 
-        for (element in result) notesList.add(element)
-
-        // Simulation of server request work
-        delay(5000L)
-        return notesList
+        delay(1000L)
+        return suspendCoroutine {
+            result.let { list ->
+                it.resume(list)
+            }
+//            if (result != null) {
+//                it.resume(result)
+//            }
+        }
     }
 
 }

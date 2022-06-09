@@ -28,6 +28,7 @@ class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
     private var adapter: NotesAdapter? = null
+    private var itemHelper: SwipeToDelete? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,18 +40,15 @@ class MainFragment : Fragment() {
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerView.adapter = adapter
 
-        // todo: take out from fragment
-        val deleteIcon =
-            ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_delete_sweep)!!
+        itemHelper = SwipeToDelete(
+            adapter = adapter!!,
+            deleteIconRes = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_baseline_delete_sweep
+            )!!
+        )
 
-        // todo: rename
-        val test = SwipeToDelete(adapter = adapter!!, deleteIconRes = deleteIcon)
-
-        ItemTouchHelper(test).attachToRecyclerView(binding.recyclerView)
-
-        test.onRemoveItemListener {
-            viewModel.deleteNote(it)
-        }
+        ItemTouchHelper(itemHelper!!).attachToRecyclerView(binding.recyclerView)
 
         viewModel.getNotesListLiveData().observe(viewLifecycleOwner) {
             if (it != null) {
@@ -66,11 +64,11 @@ class MainFragment : Fragment() {
             if (it) {
                 viewModel.getNotes()
 
-                binding.progressBar.visibility = View.VISIBLE
-                binding.infoText.visibility = View.GONE
+//                binding.progressBar.visibility = View.VISIBLE
+//                binding.infoText.visibility = View.GONE
             } else {
-                binding.progressBar.visibility = View.GONE
-                binding.infoText.text = resources.getString(R.string.connection_text)
+//                binding.progressBar.visibility = View.GONE
+//                binding.infoText.text = resources.getString(R.string.connection_text)
             }
         }
 
@@ -82,24 +80,19 @@ class MainFragment : Fragment() {
 
         binding.addNoteBtn.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.addNote()
+
             }
+        }
+
+        itemHelper?.onRemoveItemListener {
+//            viewModel.deleteNote(it)
+            viewModel.removeNote(it)
         }
 
         adapter?.setOnClickListener {
             view.findNavController()
                 .navigate(MainFragmentDirections.actionMainFragmentToNoteFragment(it))
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.insertNotes()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.insertNotes()
     }
 
     override fun onDestroyView() {

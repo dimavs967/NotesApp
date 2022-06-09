@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">notes</string>
+    <string name="app_name">Notes</string>
+    <string name="enter_title_hint">Enter title</string>
+    <string name="enter_description_hint">Enter description</string>
+    <string name="done_text_btn">Done</string>
+    <string name="example_title_text">Example Title</string>
+    <string name="example_description_text">Example description</string>
+    <string name="example_date_text">Example date</string>
+    <string name="floating_action_button_description">Floating action button to add new item</string>
+
+    <string name="connection_text">Please, check your internet connection</string>
 </resources>

@@ -66,7 +66,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun insertNotes() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val notesList = notesListLiveData.value
 
             if (notesList != null) {

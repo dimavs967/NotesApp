@@ -97,6 +97,11 @@ class MainFragment : Fragment() {
         viewModel.insertNotes()
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.insertNotes()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

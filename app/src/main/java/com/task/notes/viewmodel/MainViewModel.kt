@@ -1,15 +1,16 @@
 package com.task.notes.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import com.task.notes.data.repository.api.ApiRepository
 import com.task.notes.data.repository.note.NoteRepository
 import com.task.notes.model.NoteModel
 import com.task.notes.model.NotesModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -18,13 +19,36 @@ import kotlin.collections.ArrayList
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repo: NoteRepository,
-    private val api: ApiRepository
-) : ViewModel() {
+    private val api: ApiRepository,
+    app: Application,
+) : AndroidViewModel(app) {
 
     private var notesListLiveData = MutableLiveData<ArrayList<NoteModel>>()
 
     fun getNotesListLiveData(): LiveData<ArrayList<NoteModel>> {
         return notesListLiveData
+    }
+
+    fun test() {
+//        val data = api.getLiveData()
+//        data.observeForever(object: Observer<NotesModel> {
+//            override fun onChanged(stuff: NotesModel?) {
+//                // do something with stuff
+//                data.removeObserver(this)
+//                Log.e("test", stuff.toString())
+//            }
+//        })
+
+        viewModelScope.launch(Dispatchers.IO) {
+//            for (i in 0 until 10) {
+//                delay(3000L)
+//                println("test$i")
+//            }
+
+
+
+        }
+
     }
 
     fun request() {
@@ -33,7 +57,8 @@ class MainViewModel @Inject constructor(
 
             result?.let {
                 notesListLiveData.value?.let { list ->
-                    list.addAll(it.list)
+//                    list.addAll(it.list)
+                    list.addAll(0, it.list) // try it
                     notesListLiveData.postValue(list)
                 }
             } ?: run {

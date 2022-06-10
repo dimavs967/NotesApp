@@ -110,6 +110,8 @@ class MainFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         viewModel.setNotes()
+        viewModel.test()
+
     }
 
     override fun onDestroyView() {
@@ -117,6 +119,9 @@ class MainFragment : Fragment() {
         itemHelper = null
         _binding = null
         adapter = null
+
+
     }
+
 
 }

@@ -3,13 +3,19 @@ package com.task.notes.service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
+import com.task.notes.data.repository.note.NoteRepository
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class BackgroundService : Service() {
+class BackgroundService @Inject constructor(
+    private val repo: NoteRepository
+) : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.e("test", "service start")
     }
 
     override fun onBind(p0: Intent?): IBinder? = null
@@ -25,6 +31,7 @@ class BackgroundService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.e("test", "service destroy")
     }
 
 }

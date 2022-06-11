@@ -16,12 +16,7 @@ class NoteRepository @Inject constructor(
     }
 
     suspend fun getNotes(): ArrayList<NoteModel>? {
-        val result = noteDao.getNotes()
-        return suspendCoroutine {
-            result.let { list ->
-                it.resume(list.list as ArrayList<NoteModel>)
-            }
-        }
+        return noteDao.getNotes()?.list as ArrayList<NoteModel>?
     }
 
 }

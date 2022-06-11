@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.task.notes.R
 import com.task.notes.databinding.FragmentMainBinding
-import com.task.notes.ui.main.MainActivity
 import com.task.notes.ui.screens.adapter.NotesAdapter
-import com.task.notes.utils.NetworkHelper
 import com.task.notes.utils.SwipeToDelete
 import com.task.notes.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +27,11 @@ class MainFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
     private var adapter: NotesAdapter? = null
     private var itemHelper: SwipeToDelete? = null
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getNotes()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,24 +56,13 @@ class MainFragment : Fragment() {
         viewModel.getNotesListLiveData().observe(viewLifecycleOwner) {
             adapter?.initAdapter(it)
 
-            if (it.isNullOrEmpty()) {
-                showUiElements(false)
-            } else {
-                showUiElements(true)
-            }
-        }
 
-        NetworkHelper().getNetworkStateLiveData(requireContext()).observe(viewLifecycleOwner) {
-            if (it && viewModel.getNotesListLiveData().value.isNullOrEmpty()) {
-                viewModel.getNotes()
-                hideUiElements()
+
+            if (it.isNullOrEmpty()) {
+                binding.infoText.visibility = View.VISIBLE
+                binding.infoText.text = resources.getString(R.string.add_new_note_text)
             } else {
-                viewModel.getNotesListLiveData().value?.let {
-                    (requireActivity() as MainActivity).showSnackBar("Lost connection")
-                } ?: run {
-                    binding.addNoteBtn.visibility = View.GONE
-                    binding.infoText.text = resources.getString(R.string.connection_text)
-                }
+                binding.infoText.visibility = View.GONE
             }
         }
 
@@ -95,23 +87,6 @@ class MainFragment : Fragment() {
         adapter?.setOnClickListener {
             view.findNavController()
                 .navigate(MainFragmentDirections.actionMainFragmentToNoteFragment(it))
-        }
-    }
-
-    private fun hideUiElements() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.addNoteBtn.visibility = View.GONE
-        binding.infoText.visibility = View.GONE
-    }
-
-    private fun showUiElements(withData: Boolean) {
-        binding.addNoteBtn.visibility = View.VISIBLE
-        binding.progressBar.visibility = View.GONE
-        binding.infoText.visibility = View.GONE
-
-        if (withData) {
-            binding.infoText.visibility = View.VISIBLE
-            binding.infoText.text = resources.getString(R.string.add_new_note_text)
         }
     }
 

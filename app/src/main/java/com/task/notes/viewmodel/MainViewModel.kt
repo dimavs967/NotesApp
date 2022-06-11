@@ -1,7 +1,6 @@
 package com.task.notes.viewmodel
 
 import androidx.lifecycle.*
-import com.task.notes.data.repository.api.ApiRepository
 import com.task.notes.data.repository.note.NoteRepository
 import com.task.notes.model.NoteModel
 import com.task.notes.model.NotesModel
@@ -14,8 +13,7 @@ import kotlin.collections.ArrayList
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repo: NoteRepository,
-    private val api: ApiRepository
+    private val repo: NoteRepository
 ) : ViewModel() {
 
     private var notesListLiveData = MutableLiveData<ArrayList<NoteModel>>()
@@ -28,7 +26,7 @@ class MainViewModel @Inject constructor(
         val note = NoteModel(
             "New note",
             "",
-            DateHelper().getCurrentDate()
+            DateHelper.getCurrentDate()
         )
 
         notesListLiveData.value?.let {
@@ -65,51 +63,13 @@ class MainViewModel @Inject constructor(
 
     fun getNotes() {
         viewModelScope.launch(Dispatchers.IO) {
-
-            val remoteData = api.request()
-
-            val localData = repo.getNotes()?.let {
-
+            if (notesListLiveData.value == null) {
+                repo.getNotes()?.let {
+                    notesListLiveData.postValue(it)
+                } ?: run {
+                    notesListLiveData.postValue(ArrayList())
+                }
             }
-
-//            localData?.let {
-//                remoteData?.let { r ->
-//                    it.addAll(0, r)
-//                    notesListLiveData.postValue(it)
-//                } ?: run {
-//                    notesListLiveData.postValue(it)
-//                }
-//            } ?: run {
-//                remoteData?.let {
-//                    notesListLiveData.postValue(it)
-//                }
-//            }
-//
-//            if (localData == null || remoteData == null) {
-//                notesListLiveData.postValue(ArrayList())
-//            }
-
-
-
-//            result?.let {
-//                notesListLiveData.value?.let { list ->
-////                    list.addAll(it.list)
-//
-//                    list.addAll(0, it.list) // try it
-//                    notesListLiveData.postValue(list)
-//                } ?: run {
-//                    val list = mutableListOf<NoteModel>()
-//
-//                }
-//            }
-
-//            if (notesListLiveData.value == null) {
-//                repo.getNotes()?.let {
-//                    notesListLiveData.postValue(it.list as ArrayList<NoteModel>)
-//                } ?: run {
-//                    notesListLiveData.postValue(ArrayList())
-//                }
-//            }
         }
     }
 

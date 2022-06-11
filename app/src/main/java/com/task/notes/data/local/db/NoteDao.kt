@@ -13,6 +13,6 @@ interface NoteDao {
     suspend fun insertNotes(notesModel: NotesModel)
 
     @Query("SELECT * FROM notes_table")
-    suspend fun getNotes(): NotesModel
+    suspend fun getNotes(): NotesModel?
 
 }

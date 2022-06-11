@@ -3,7 +3,6 @@ package com.task.notes.ui.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
-import com.google.android.material.snackbar.Snackbar
 import com.task.notes.R
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,14 +19,5 @@ class MainActivity : AppCompatActivity() {
             hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
     }
-
-    fun showSnackBar(message: String) {
-        Snackbar.make(
-            this.findViewById(android.R.id.content),
-            message, Snackbar.LENGTH_LONG
-        ).show()
-    }
-
-    // todo: refactor code
 
 }

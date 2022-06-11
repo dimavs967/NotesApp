@@ -2,7 +2,7 @@ package com.task.notes.utils
 
 import java.util.Calendar
 
-class DateHelper {
+object DateHelper {
 
     private val cal = Calendar.getInstance()
 

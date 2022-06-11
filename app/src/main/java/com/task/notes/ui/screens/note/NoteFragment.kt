@@ -71,7 +71,7 @@ class NoteFragment : Fragment() {
                 NoteModel(
                     binding.noteTitle.text.toString(),
                     binding.noteDescription.text.toString(),
-                    DateHelper().getCurrentDate()
+                    DateHelper.getCurrentDate()
                 )
             )
         }

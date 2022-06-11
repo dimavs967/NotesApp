@@ -13,6 +13,7 @@ import com.task.notes.databinding.FragmentNoteBinding
 import com.task.notes.R
 import com.task.notes.model.NoteModel
 import com.task.notes.ui.main.MainActivity
+import com.task.notes.utils.DateHelper
 import com.task.notes.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -49,12 +50,8 @@ class NoteFragment : Fragment() {
         }
 
         binding.editBtn.setOnClickListener {
-            binding.editBtn.visibility = View.GONE
-            binding.noteTitle.clearFocus()
-            binding.noteDescription.clearFocus()
-            binding.parentLayout.requestFocus()
-
             (requireActivity() as MainActivity).hideSoftKeyboard()
+            clearElementsFocus()
             updateNoteChanges()
         }
 
@@ -74,10 +71,17 @@ class NoteFragment : Fragment() {
                 NoteModel(
                     binding.noteTitle.text.toString(),
                     binding.noteDescription.text.toString(),
-                    binding.noteDate.text.toString()
+                    DateHelper().getCurrentDate()
                 )
             )
         }
+    }
+
+    private fun clearElementsFocus() {
+        binding.editBtn.visibility = View.GONE
+        binding.noteTitle.clearFocus()
+        binding.noteDescription.clearFocus()
+        binding.parentLayout.requestFocus()
     }
 
     private fun updateUiElements(note: NoteModel) {

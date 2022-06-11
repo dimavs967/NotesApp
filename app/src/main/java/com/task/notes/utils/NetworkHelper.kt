@@ -10,7 +10,7 @@ import androidx.annotation.NonNull
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-class NetworkUtility : ConnectivityManager.NetworkCallback() {
+class NetworkHelper : ConnectivityManager.NetworkCallback() {
 
     private val networkState = MutableLiveData<Boolean>()
     private var capabilities: NetworkCapabilities? = null

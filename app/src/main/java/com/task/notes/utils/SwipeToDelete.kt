@@ -8,12 +8,9 @@ import com.task.notes.ui.screens.adapter.NotesAdapter
 
 class SwipeToDelete(
     private var onRemoveItemListener: (Int) -> Unit = {},
-    adapter: NotesAdapter,
-    deleteIconRes: Drawable
+    private val mAdapter: NotesAdapter,
+    private val deleteIcon: Drawable
 ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-
-    private val mAdapter = adapter
-    private val deleteIcon = deleteIconRes
 
     private val inWidth = deleteIcon.intrinsicWidth
     private val inHeight = deleteIcon.intrinsicHeight

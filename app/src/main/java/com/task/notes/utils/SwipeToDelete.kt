@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.task.notes.ui.screens.adapter.NotesAdapter
+import com.task.notes.adapter.NotesAdapter
 
 class SwipeToDelete(
     private var onRemoveItemListener: (Int) -> Unit = {},

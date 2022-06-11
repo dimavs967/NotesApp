@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.task.notes.R
 import com.task.notes.databinding.FragmentMainBinding
-import com.task.notes.ui.screens.adapter.NotesAdapter
+import com.task.notes.adapter.NotesAdapter
 import com.task.notes.ui.screens.base.BaseFragment
 import com.task.notes.utils.SwipeToDelete
 import com.task.notes.viewmodel.MainViewModel

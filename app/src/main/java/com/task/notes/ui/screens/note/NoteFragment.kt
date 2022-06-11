@@ -9,7 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.task.notes.databinding.FragmentNoteBinding
 import com.task.notes.R
 import com.task.notes.model.NoteModel
-import com.task.notes.ui.main.MainActivity
+import com.task.notes.ui.activity.MainActivity
 import com.task.notes.ui.screens.base.BaseFragment
 import com.task.notes.utils.DateHelper
 import com.task.notes.viewmodel.MainViewModel

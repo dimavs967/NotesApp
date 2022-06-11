@@ -1,4 +1,4 @@
-package com.task.notes.ui.screens.adapter
+package com.task.notes.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

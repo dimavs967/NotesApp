@@ -1,4 +1,4 @@
-package com.task.notes.ui.main
+package com.task.notes.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

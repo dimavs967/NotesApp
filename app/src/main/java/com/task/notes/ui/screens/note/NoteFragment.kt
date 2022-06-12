@@ -49,6 +49,11 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>() {
         }
     }
 
+    override fun onStop() {
+        viewModel.setNotes()
+        super.onStop()
+    }
+
     private fun updateNoteChanges() {
         viewModel.editNote(
             args.position,

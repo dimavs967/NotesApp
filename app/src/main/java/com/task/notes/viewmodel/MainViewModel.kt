@@ -1,6 +1,9 @@
 package com.task.notes.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.task.notes.data.repository.note.NoteRepository
 import com.task.notes.model.NoteModel
 import com.task.notes.model.NotesModel
@@ -26,7 +29,7 @@ class MainViewModel @Inject constructor(
         val note = NoteModel(
             "New note",
             "",
-            DateHelper.getCurrentTime()
+            DateHelper.getCurrentDateAndTime()
         )
 
         notesListLiveData.value?.let {
@@ -42,9 +45,9 @@ class MainViewModel @Inject constructor(
     fun editNote(i: Int, title: String, description: String) {
         notesListLiveData.value?.let {
             it[i] = NoteModel(
-                title, 
+                title,
                 description,
-                DateHelper.getCurrentTime()
+                DateHelper.getCurrentDateAndTime()
             )
             notesListLiveData.postValue(it)
         }

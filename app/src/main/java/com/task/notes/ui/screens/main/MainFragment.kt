@@ -80,8 +80,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     }
 
     override fun onStop() {
-        super.onStop()
         viewModel.setNotes()
+        super.onStop()
     }
 
     override fun onDestroyView() {

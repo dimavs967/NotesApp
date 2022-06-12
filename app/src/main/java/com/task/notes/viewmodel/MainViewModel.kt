@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
         val note = NoteModel(
             "New note",
             "",
-            DateHelper.getCurrentDate()
+            DateHelper.getCurrentTime()
         )
 
         notesListLiveData.value?.let {
@@ -39,9 +39,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun editNote(i: Int, note: NoteModel) {
+    fun editNote(i: Int, title: String, description: String) {
         notesListLiveData.value?.let {
-            it[i] = note
+            it[i] = NoteModel(
+                title, 
+                description,
+                DateHelper.getCurrentTime()
+            )
             notesListLiveData.postValue(it)
         }
     }

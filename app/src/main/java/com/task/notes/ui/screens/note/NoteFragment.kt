@@ -3,7 +3,6 @@ package com.task.notes.ui.screens.note
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.task.notes.databinding.FragmentNoteBinding
@@ -11,10 +10,8 @@ import com.task.notes.R
 import com.task.notes.model.NoteModel
 import com.task.notes.ui.activity.MainActivity
 import com.task.notes.ui.screens.base.BaseFragment
-import com.task.notes.utils.DateHelper
 import com.task.notes.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NoteFragment : BaseFragment<FragmentNoteBinding>() {
@@ -53,16 +50,11 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>() {
     }
 
     private fun updateNoteChanges() {
-        lifecycleScope.launch {
-            viewModel.editNote(
-                args.position,
-                NoteModel(
-                    binding.noteTitle.text.toString(),
-                    binding.noteDescription.text.toString(),
-                    DateHelper.getCurrentDate()
-                )
-            )
-        }
+        viewModel.editNote(
+            args.position,
+            binding.noteTitle.text.toString(),
+            binding.noteDescription.text.toString()
+        )
     }
 
     private fun clearElementsFocus() {
